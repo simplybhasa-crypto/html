@@ -1,16 +1,306 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My First Web Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fun Zone</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1d2671, #c33764);
+      color: white;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    header {
+      padding: 50px 20px 30px;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+    }
+
+    .robot {
+      font-size: 80px;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .container {
+      width: 90%;
+      max-width: 950px;
+      margin: auto;
+      padding-bottom: 50px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 25px;
+      margin: 20px 0;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+      margin-bottom: 15px;
+    }
+
+    input,
+    select {
+      width: 80%;
+      max-width: 400px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin: 10px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #ffcc00;
+      color: #222;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 22px;
+      margin: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ffffff;
+      transform: scale(1.06);
+    }
+
+    .answer-box {
+      min-height: 55px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 15px;
+      font-size: 1.1rem;
+    }
+
+    .quiz-options {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 20px;
+    }
+  </style>
 </head>
+
 <body>
+  <header>
+    <div class="robot">🤖</div>
+    <h1>AI Fun Zone</h1>
+    <p>Explore artificial intelligence through games and activities!</p>
+  </header>
 
-  <h1 style="color:blue;">Hello! My name is Sam</h1>
+  <main class="container">
 
-  <p>I love the color <span style="color:green;">green</span>!</p>
+    <!-- AI Chatbot -->
+    <section class="card">
+      <h2>💬 Talk to Robo</h2>
+      <p>Try saying “hello,” “AI,” “joke,” or “robot.”</p>
 
-  <button onclick="alert('You clicked the button!')">Click Me!</button>
+      <input
+        type="text"
+        id="userMessage"
+        placeholder="Type your message..."
+      />
 
+      <br />
+
+      <button onclick="talkToRobot()">Send Message</button>
+
+      <div class="answer-box" id="robotAnswer">
+        Robo is waiting for your message!
+      </div>
+    </section>
+
+    <!-- AI Project Generator -->
+    <section class="card">
+      <h2>💡 AI Project Idea Generator</h2>
+      <p>Choose a topic and let AI create a project idea.</p>
+
+      <select id="projectTopic">
+        <option value="animals">Animals</option>
+        <option value="space">Space</option>
+        <option value="games">Video Games</option>
+        <option value="school">School</option>
+        <option value="environment">Environment</option>
+      </select>
+
+      <br />
+
+      <button onclick="generateIdea()">Generate Idea</button>
+
+      <div class="answer-box" id="projectAnswer">
+        Your project idea will appear here.
+      </div>
+    </section>
+
+    <!-- AI Quiz -->
+    <section class="card">
+      <h2>🧠 AI Quiz</h2>
+
+      <p id="quizQuestion">
+        What does AI stand for?
+      </p>
+
+      <div class="quiz-options">
+        <button onclick="checkAnswer('A')">Artificial Intelligence</button>
+        <button onclick="checkAnswer('B')">Automatic Internet</button>
+        <button onclick="checkAnswer('C')">Amazing Invention</button>
+      </div>
+
+      <div class="answer-box" id="quizResult">
+        Choose an answer!
+      </div>
+    </section>
+
+    <!-- AI Fact Generator -->
+    <section class="card">
+      <h2>✨ Random AI Fact</h2>
+
+      <button onclick="showFact()">Show Me a Fact</button>
+
+      <div class="answer-box" id="factAnswer">
+        Click the button to discover an AI fact.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Created by a future AI programmer 🚀</p>
+  </footer>
+
+  <script>
+    function talkToRobot() {
+      const message = document
+        .getElementById("userMessage")
+        .value
+        .toLowerCase()
+        .trim();
+
+      const answerBox = document.getElementById("robotAnswer");
+      let response;
+
+      if (message === "") {
+        response = "Please type a message first!";
+      } else if (message.includes("hello") || message.includes("hi")) {
+        response = "Hello, human! 👋 I am Robo.";
+      } else if (message.includes("ai")) {
+        response =
+          "AI helps computers learn, solve problems, and recognize patterns.";
+      } else if (message.includes("joke")) {
+        response =
+          "Why did the robot go to school? To improve its byte-sized knowledge! 😂";
+      } else if (message.includes("robot")) {
+        response =
+          "Robots use sensors and computer programs to complete different tasks.";
+      } else if (message.includes("name")) {
+        response = "My name is Robo, your friendly AI assistant!";
+      } else {
+        response =
+          "That is interesting! I am still learning how to answer that question.";
+      }
+
+      answerBox.textContent = response;
+    }
+
+    function generateIdea() {
+      const topic = document.getElementById("projectTopic").value;
+      const answerBox = document.getElementById("projectAnswer");
+
+      const ideas = {
+        animals:
+          "Create an AI app that identifies animals from pictures and shares fun facts about them.",
+
+        space:
+          "Build an AI space assistant that recommends planets for imaginary human missions.",
+
+        games:
+          "Design a game where an AI character changes its strategy based on the player's choices.",
+
+        school:
+          "Create an AI study buddy that asks quiz questions and gives helpful hints.",
+
+        environment:
+          "Build an AI recycling helper that teaches users which bin to use for different items."
+      };
+
+      answerBox.textContent = ideas[topic];
+    }
+
+    function checkAnswer(choice) {
+      const result = document.getElementById("quizResult");
+
+      if (choice === "A") {
+        result.textContent =
+          "Correct! 🎉 AI stands for Artificial Intelligence.";
+      } else {
+        result.textContent =
+          "Not quite. Try again! Remember, AI helps computers act intelligently.";
+      }
+    }
+
+    function showFact() {
+      const facts = [
+        "AI can recognize objects in pictures.",
+        "Some AI systems can translate languages in seconds.",
+        "AI is used in video games to control computer characters.",
+        "Self-driving cars use AI to understand roads and traffic.",
+        "AI can help doctors study medical images.",
+        "Chatbots use AI to understand and respond to messages."
+      ];
+
+      const randomNumber = Math.floor(Math.random() * facts.length);
+
+      document.getElementById("factAnswer").textContent =
+        facts[randomNumber];
+    }
+
+    document
+      .getElementById("userMessage")
+      .addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          talkToRobot();
+        }
+      });
+  </script>
 </body>
 </html>
